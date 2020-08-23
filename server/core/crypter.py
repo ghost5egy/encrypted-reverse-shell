@@ -1,7 +1,7 @@
 from Crypto.Cipher import AES
 from Crypto import Random
 from Crypto.Util.Padding import pad ,unpad
-import hashlib , base64 , urllib3
+import hashlib , base64
 
 class cryptMsg :
 	def __init__(self, key):
