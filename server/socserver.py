@@ -21,7 +21,25 @@ def main():
 		if cmd == '' :
 			continue
 		elif cmd.find('upload', 0 , 6) != -1 :
-			print('uploading')
+			comp = cmd.split(' ')
+			if os.path.exists(comp[1]) is False:
+				print('Please enter correct path')
+				continue
+			if os.path.isfile(comp[1]) is False:
+				print('it\'s not a file it\'s directory')
+				continue
+			if os.path.getsize(comp[1]) <= 0:
+				print('File is empty')
+				continue
+			con.send_serv(crypter.encrypt(cmd))
+			fs = filestream(comp[1], 'rb')
+			data = fs.read()
+			while len(data) > 0:
+				data = fs.read()
+				con.send_serv(data)
+			con.send_serv(data + deli.encode())
+			fs.close()
+			del fs
 			continue
 		elif cmd.find('download', 0 , 8) != -1 :
 			con.send_serv(crypter.encrypt(cmd))
@@ -39,7 +57,7 @@ def main():
 		else:
 			con.send_serv(crypter.encrypt(cmd))
 			data = crypter.decrypt(con.recv_serv())
-			while data.endswith(deli) == -1 :
+			while data.rfind(deli) == -1 :
 				data = crypter.decrypt(con.recv_serv())
 			print(data[:data.rfind(deli)])
 		if cmd == 'exit':
