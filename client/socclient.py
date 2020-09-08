@@ -28,7 +28,7 @@ def main():
 				data = comp[1]
 			elif cmd.find('upload', 0 , 6) != -1:
 				comp = cmd.split()
-				print(comp[1])
+				print(data.decode())
 				fs = filestream(comp[1], 'wb+')
 				while True:
 					data = con.recv_serv()
